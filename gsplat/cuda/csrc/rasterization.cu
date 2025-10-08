@@ -1576,6 +1576,7 @@ std::tuple<torch::Tensor, torch::Tensor, torch::Tensor> rasterize_to_pixels_fwd_
     const uint32_t image_width,
     const uint32_t image_height,
     const uint32_t tile_size,
+    const uint32_t rolling_shutter_direction, // 1: top2bot, 2: left2right, 3: bot2top, 4: right2left, 5: global
     // intersections
     const torch::Tensor &tile_offsets, // [C, tile_height, tile_width]
     const torch::Tensor &flatten_ids   // [n_isects]
@@ -3170,6 +3171,7 @@ rasterize_to_pixels_bwd_tensor(
     const uint32_t image_width,
     const uint32_t image_height,
     const uint32_t tile_size,
+    const uint32_t rolling_shutter_direction, // 1: top2bot, 2: left2right, 3: bot2top, 4: right2left, 5: global
     // intersections
     const torch::Tensor &tile_offsets, // [C, tile_height, tile_width]
     const torch::Tensor &flatten_ids,  // [n_isects]

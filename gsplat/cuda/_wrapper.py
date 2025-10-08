@@ -940,11 +940,11 @@ def rasterize_to_pixels(
         opacities.contiguous(),
         pix_vels.contiguous(),
         rolling_shutter_time.contiguous(),
+        rolling_shutter_direction,
         backgrounds,
         image_width,
         image_height,
         tile_size,
-        rolling_shutter_direction,
         isect_offsets.contiguous(),
         flatten_ids.contiguous(),
         absgrad,
@@ -1902,11 +1902,11 @@ class _RasterizeToPixels(torch.autograd.Function):
             opacities,
             pix_vels,
             rolling_shutter_time,
-            rolling_shutter_direction,
             backgrounds,
             width,
             height,
             tile_size,
+            rolling_shutter_direction,
             isect_offsets,
             flatten_ids,
             render_alphas,
@@ -2010,7 +2010,9 @@ class _RasterizeToPoints(torch.autograd.Function):
         ctx.tile_height = tile_height
         ctx.absgrad = absgrad
         ctx.compute_alpha_sum_until_points = compute_alpha_sum_until_points
-        ctx.compute_alpha_sum_until_points_threshold = compute_alpha_sum_until_points_threshold
+        ctx.compute_alpha_sum_until_points_threshold = (
+            compute_alpha_sum_until_points_threshold
+        )
         ctx.depth_channel_idx = depth_channel_idx
 
         # double to float

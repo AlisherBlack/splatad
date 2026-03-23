@@ -2,6 +2,7 @@ import glob
 import os
 import os.path as osp
 import platform
+import subprocess
 import sys
 
 from setuptools import find_packages, setup
@@ -127,4 +128,16 @@ setup(
     packages=find_packages(),
     # https://github.com/pypa/setuptools/issues/1461#issuecomment-954725244
     include_package_data=True,
+)
+
+# Trigger CUDA JIT compilation after install
+max_jobs = os.getenv("MAX_JOBS", "10")
+print(f"splatad: Triggering CUDA JIT compilation with MAX_JOBS={max_jobs}...")
+subprocess.check_call(
+    [
+        sys.executable,
+        "-c",
+        "from splatad.cuda import _backend; print('splatad CUDA compiled')",
+    ],
+    env={**os.environ, "MAX_JOBS": max_jobs},
 )

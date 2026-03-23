@@ -61,7 +61,7 @@ class DefaultStrategy(Strategy):
 
     Examples:
 
-        >>> from gsplat import DefaultStrategy, rasterization
+        >>> from splatad import DefaultStrategy, rasterization
         >>> params: Dict[str, torch.nn.Parameter] | torch.nn.ParameterDict = ...
         >>> optimizers: Dict[str, torch.optim.Optimizer] = ...
         >>> strategy = DefaultStrategy()
@@ -249,7 +249,9 @@ class DefaultStrategy(Strategy):
             radii = info["radii"][sel].max(dim=-1).values  # [nnz]
 
         state["grad2d"].index_add_(0, gs_ids, grads.norm(dim=-1))
-        state["count"].index_add_(0, gs_ids, torch.ones_like(gs_ids, dtype=torch.float32))
+        state["count"].index_add_(
+            0, gs_ids, torch.ones_like(gs_ids, dtype=torch.float32)
+        )
         if self.refine_scale2d_stop_iter > 0:
             # Should be ideally using scatter max
             state["radii"][gs_ids] = torch.maximum(

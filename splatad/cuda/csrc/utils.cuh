@@ -1,5 +1,5 @@
-#ifndef GSPLAT_CUDA_UTILS_H
-#define GSPLAT_CUDA_UTILS_H
+#ifndef splatad_CUDA_UTILS_H
+#define splatad_CUDA_UTILS_H
 
 #include "helpers.cuh"
 #include "third_party/glm/glm/glm.hpp"
@@ -554,4 +554,4 @@ inline __device__ float angle_difference(const float angle1, const float angle2)
     return diff < -180.f ? diff + 360.f : diff;
 }
 
-#endif // GSPLAT_CUDA_UTILS_H
+#endif // splatad_CUDA_UTILS_H

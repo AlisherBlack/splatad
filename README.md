@@ -28,7 +28,7 @@ Real-Time Lidar and Camera Rendering with 3D Gaussian Splatting for Autonomous D
 
 
 # About
-This is the official repository for the CVPR 2025 paper [_SplatAD: Real-Time Lidar and Camera Rendering with 3D Gaussian Splatting for Autonomous Driving_](https://arxiv.org/abs/2411.16816). The code in this repository builds upon the open-source library [gsplat](https://github.com/nerfstudio-project/gsplat), with modifications and extensions designed for autonomous driving data. 
+This is the official repository for the CVPR 2025 paper [_SplatAD: Real-Time Lidar and Camera Rendering with 3D Gaussian Splatting for Autonomous Driving_](https://arxiv.org/abs/2411.16816). The code in this repository builds upon the open-source library [splatad](https://github.com/nerfstudio-project/splatad), with modifications and extensions designed for autonomous driving data. 
 
 While the code contians all components needed to efficiently render camera and lidar data, the SplatAD-model itself, including dataloading, decoders, etc., will be released through [neurad-studio](https://github.com/georghess/neurad-studio).
 
@@ -42,16 +42,16 @@ While the code contians all components needed to efficiently render camera and l
 
 
 # Installation
-Our code introduce no additional dependencies. We thus refer to the original documentation from gsplat for both [installation](https://github.com/nerfstudio-project/gsplat#installation) and [development setup](https://github.com/nerfstudio-project/gsplat/blob/main/docs/DEV.md).
+Our code introduce no additional dependencies. We thus refer to the original documentation from splatad for both [installation](https://github.com/nerfstudio-project/splatad#installation) and [development setup](https://github.com/nerfstudio-project/splatad/blob/main/docs/DEV.md).
 
 # Usage
-See [`rasterization`](gsplat/rendering.py#L22) and [`lidar_rasterization`]((gsplat/rendering.py#L443)) for entry points to camera and lidar rasterization.
+See [`rasterization`](splatad/rendering.py#L22) and [`lidar_rasterization`]((splatad/rendering.py#L443)) for entry points to camera and lidar rasterization.
 Additionally, we provide example notebooks under [examples](examples) that demonstrate lidar rendering and rolling shutter compensation.
 For further examples, check out the [test files](tests).
 
 
 # Built On
-- [gsplat](https://github.com/nerfstudio-project/gsplat) - Collaboration friendly library for CUDA accelerated rasterization of Gaussians with python bindings
+- [splatad](https://github.com/nerfstudio-project/splatad) - Collaboration friendly library for CUDA accelerated rasterization of Gaussians with python bindings
 - [3dgs-deblur](https://github.com/SpectacularAI/3dgs-deblur) - Inspiration for the rolling shutter compensation
 
 # Citation
@@ -78,4 +78,4 @@ If you use this code or find our paper useful, please consider citing:
     <img src="https://github.com/carlinds.png" width="60px;" style="border-radius: 50%;"/>
 </a>
 
-\+ [gsplat contributors](https://github.com/nerfstudio-project/gsplat/graphs/contributors)
+\+ [splatad contributors](https://github.com/nerfstudio-project/splatad/graphs/contributors)

@@ -4,16 +4,20 @@ import shutil
 from pathlib import Path
 import argparse
 
-parser = argparse.ArgumentParser(description="Build and cache gsplat CUDA extensions.")
+parser = argparse.ArgumentParser(description="Build and cache splatad CUDA extensions.")
 parser.add_argument(
     "--build-root",
     type=Path,
     required=True,
-    help="Path to the central build cache directory (e.g. /shared/gsplat_builds)",
+    help="Path to the central build cache directory (e.g. /shared/splatad_builds)",
 )
 
+
 def get_commit_hash():
-    return subprocess.check_output(["git", "rev-parse", "--short", "HEAD"], text=True).strip()
+    return subprocess.check_output(
+        ["git", "rev-parse", "--short", "HEAD"], text=True
+    ).strip()
+
 
 def main():
     args = parser.parse_args()
@@ -26,15 +30,14 @@ def main():
         print(f"✅ Build for {commit} already exists at {build_dir}")
         return
 
-    print(f"🔨 Building gsplat extensions for commit {commit} ...")
+    print(f"🔨 Building splatad extensions for commit {commit} ...")
     build_tmp = repo_root / "build_tmp"
     if build_tmp.exists():
         shutil.rmtree(build_tmp)
 
     os.environ["BUILD_CUDA"] = "1"
     subprocess.check_call(
-        ["python", "setup.py", "build_ext", f"--build-lib={build_tmp}"],
-        cwd=repo_root
+        ["python", "setup.py", "build_ext", f"--build-lib={build_tmp}"], cwd=repo_root
     )
 
     build_dir.mkdir(parents=True, exist_ok=True)
@@ -47,6 +50,7 @@ def main():
 
     shutil.rmtree(build_tmp)
     print(f"✅ Done. Stored build at: {build_dir}")
+
 
 if __name__ == "__main__":
     main()

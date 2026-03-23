@@ -5,7 +5,7 @@ import torch
 from torch import Tensor
 from typing_extensions import Literal
 
-from gsplat.cuda._wrapper import fully_fused_projection
+from splatad.cuda._wrapper import fully_fused_projection
 
 from .cuda._wrapper import (
     fully_fused_lidar_projection,
@@ -33,7 +33,9 @@ def rasterization(
     linear_velocity: Optional[Tensor] = None,  # [C, 3]
     angular_velocity: Optional[Tensor] = None,  # [C, 3]
     rolling_shutter_time: Optional[Tensor] = None,  # [C]
-    rolling_shutter_direction: Optional[int] = 1,  # 1: top2bottom, 2: bottom2top, 3: left2right, 4: right2left, 5: no rolling shutter
+    rolling_shutter_direction: Optional[
+        int
+    ] = 1,  # 1: top2bottom, 2: bottom2top, 3: left2right, 4: right2left, 5: no rolling shutter
     near_plane: float = 0.01,
     far_plane: float = 1e10,
     radius_clip: float = 0.0,
@@ -226,7 +228,7 @@ def rasterization(
     else:
         rolling_shutter_time = torch.zeros(C, device=means.device)
     if rolling_shutter_direction is not None:
-        assert rolling_shutter_direction in (1,2,3,4,5), rolling_shutter_direction
+        assert rolling_shutter_direction in (1, 2, 3, 4, 5), rolling_shutter_direction
     else:
         rolling_shutter_direction = 1
     assert render_mode in ["RGB", "D", "ED", "RGB+D", "RGB+ED"], render_mode
@@ -330,7 +332,7 @@ def rasterization(
         camtoworlds = torch.inverse(viewmats)  # [C, 4, 4]
         if packed:
             dirs = means[gaussian_ids, :] - camtoworlds[camera_ids, :3, 3]  # [nnz, 3]
-            masks = radii[...,0] > 0  # [nnz]
+            masks = radii[..., 0] > 0  # [nnz]
             if colors.dim() == 3:
                 # Turn [N, K, 3] into [nnz, 3]
                 shs = colors[gaussian_ids, :, :]  # [nnz, K, 3]
@@ -592,7 +594,7 @@ def lidar_rasterization(
 
         **alpha_sum_until_points**: The sum of alpha values until the depth specified by raster_pts minus threshold. [C, height, width, 1].
 
-        **meta**: A dictionary of intermediate results of the rasterization. Contains median depths. 
+        **meta**: A dictionary of intermediate results of the rasterization. Contains median depths.
 
     Examples:
 
@@ -623,9 +625,9 @@ def lidar_rasterization(
 
     """
 
-    N = means.shape[0] # number of Gaussians
-    C = viewmats.shape[0] # number of lidars
-    D = lidar_features.shape[-1] # feature dimension
+    N = means.shape[0]  # number of Gaussians
+    C = viewmats.shape[0]  # number of lidars
+    D = lidar_features.shape[-1]  # feature dimension
     assert means.shape == (N, 3), means.shape
     assert quats.shape == (N, 4), quats.shape
     assert scales.shape == (N, 3), scales.shape
@@ -640,8 +642,11 @@ def lidar_rasterization(
     assert min_elevation >= -85.0 and max_elevation <= 85.0, (
         min_elevation,
         max_elevation,
-    ) # beyond this range, the function is not numerically stable
-    assert tile_width * tile_height <= 256, (tile_width, tile_height) # tile size is limited to 256
+    )  # beyond this range, the function is not numerically stable
+    assert tile_width * tile_height <= 256, (
+        tile_width,
+        tile_height,
+    )  # tile size is limited to 256
     assert n_elevation_channels > 0, n_elevation_channels
     # assert n_elevation_channels % tile_height == 0, (n_elevation_channels, tile_height)
     assert tile_elevation_boundaries.shape == (
@@ -712,7 +717,7 @@ def lidar_rasterization(
         camera_ids, gaussian_ids = None, None
 
     if not use_depth_compensation:
-        depth_compensations = depth_compensations * 0 
+        depth_compensations = depth_compensations * 0
 
     if compensations is not None:
         opacities = opacities * compensations
@@ -743,32 +748,40 @@ def lidar_rasterization(
     if (lidar_features.shape[-1] + 1) > channel_chunk:
         # slice into chunks
         n_chunks = (lidar_features.shape[-1] + channel_chunk) // channel_chunk
-        render_lidar_features, render_alphas, alpha_sum_until_points, median_depths = [], [], [], []
+        render_lidar_features, render_alphas, alpha_sum_until_points, median_depths = (
+            [],
+            [],
+            [],
+            [],
+        )
         for i in range(n_chunks):
             lidar_features_chunk = lidar_features[
                 ..., i * (channel_chunk - 1) : (i + 1) * (channel_chunk - 1)
             ]
 
-            render_lidar_features_, render_alphas_, alpha_sum_until_points_, median_depths_ = (
-                rasterize_to_points(
-                    means2d,
-                    conics,
-                    torch.cat([lidar_features_chunk, depths[..., None]], dim=-1),
-                    opacities,
-                    pix_vels,
-                    depth_compensations,
-                    raster_pts,
-                    image_width,
-                    image_height,
-                    tile_width,
-                    tile_height,
-                    isect_offsets,
-                    flatten_ids,
-                    compute_alpha_sum_until_points=compute_alpha_sum_until_points,
-                    compute_alpha_sum_until_points_threshold=compute_alpha_sum_until_points_threshold,
-                    packed=packed,
-                    absgrad=absgrad,
-                )
+            (
+                render_lidar_features_,
+                render_alphas_,
+                alpha_sum_until_points_,
+                median_depths_,
+            ) = rasterize_to_points(
+                means2d,
+                conics,
+                torch.cat([lidar_features_chunk, depths[..., None]], dim=-1),
+                opacities,
+                pix_vels,
+                depth_compensations,
+                raster_pts,
+                image_width,
+                image_height,
+                tile_width,
+                tile_height,
+                isect_offsets,
+                flatten_ids,
+                compute_alpha_sum_until_points=compute_alpha_sum_until_points,
+                compute_alpha_sum_until_points_threshold=compute_alpha_sum_until_points_threshold,
+                packed=packed,
+                absgrad=absgrad,
             )
             if i == (n_chunks - 1):
                 render_lidar_features.append(render_lidar_features_)
@@ -780,7 +793,7 @@ def lidar_rasterization(
         render_lidar_features = torch.cat(render_lidar_features, dim=-1)
         median_depths = torch.cat(median_depths, dim=-1)
         render_alphas = render_alphas[0]  # discard the rest
-        alpha_sum_until_points = alpha_sum_until_points[0] # same alphas for all chunks
+        alpha_sum_until_points = alpha_sum_until_points[0]  # same alphas for all chunks
     else:
         render_lidar_features, render_alphas, alpha_sum_until_points, median_depths = (
             rasterize_to_points(

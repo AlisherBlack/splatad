@@ -401,9 +401,10 @@ isect_lidar_tiles_tensor(const torch::Tensor &means2d, // [C, N, 2] or [nnz, 2]
                    const at::optional<torch::Tensor> &camera_ids,   // [nnz]
                    const at::optional<torch::Tensor> &gaussian_ids, // [nnz]
                    const uint32_t C,
-                   const torch::Tensor &elev_boundaries, // [M] 
+                   const torch::Tensor &elev_boundaries, // [M]
                    const float tile_azim_resolution, // [1]
                    const float min_azim, // [1]
+                   const float max_azim, // [1]
                    const bool sort, const bool double_buffer) {
     DEVICE_GUARD(means2d);
     CHECK_INPUT(means2d);
@@ -432,7 +433,7 @@ isect_lidar_tiles_tensor(const torch::Tensor &means2d, // [C, N, 2] or [nnz, 2]
         total_elems = C * N;
     }
 
-    uint32_t n_tiles_azim = (uint32_t)ceil(360.f / tile_azim_resolution);
+    uint32_t n_tiles_azim = (uint32_t)ceil((max_azim - min_azim) / tile_azim_resolution);
     uint32_t n_tiles_elev = (uint32_t)(elev_boundaries.size(0) - 1);
     uint32_t n_tiles = n_tiles_azim * n_tiles_elev;
     at::cuda::CUDAStream stream = at::cuda::getCurrentCUDAStream();

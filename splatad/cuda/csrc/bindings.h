@@ -239,6 +239,7 @@ isect_lidar_tiles_tensor(const torch::Tensor &means2d, // [C, N, 2] or [nnz, 2]
                    const torch::Tensor &elev_boundaries,
                    const float tile_azim_resolution,
                    const float min_azim,
+                   const float max_azim,
                    const bool sort, const bool double_buffer);
 
 torch::Tensor isect_offset_encode_tensor(const torch::Tensor &isect_ids, // [n_isects]

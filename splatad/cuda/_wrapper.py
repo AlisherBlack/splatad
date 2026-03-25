@@ -610,6 +610,7 @@ def isect_lidar_tiles(
     elev_boundaries: Tensor,
     tile_azim_resolution: float,
     min_azim: float,
+    max_azim: float,
     sort: bool = True,
     packed: bool = False,
     n_cameras: Optional[int] = None,
@@ -625,6 +626,7 @@ def isect_lidar_tiles(
         elev_boundaries: Elevation boundaries, defining borders between lidar channels. [n_elev]
         tile_azim_resolution: Tile azimuth resolution.
         min_azim: Minimum azimuth angle in degrees.
+        max_azim: Maximum azimuth angle in degrees.
         sort: If True, the returned intersections will be sorted by the intersection ids. Default: True.
         packed: If True, the input tensors are packed. Default: False.
         n_cameras: Number of lidars. Required if packed is True.
@@ -670,6 +672,7 @@ def isect_lidar_tiles(
         elev_boundaries.contiguous(),
         tile_azim_resolution,
         min_azim,
+        max_azim,
         sort,
         True,  # DoubleBuffer: memory efficient radixsort
     )

@@ -733,6 +733,7 @@ def lidar_rasterization(
         elev_boundaries=tile_elevation_boundaries,
         tile_azim_resolution=tile_azimuth_resolution,
         min_azim=min_azimuth,
+        max_azim=max_azimuth,
         packed=packed,
         n_cameras=C,
         camera_ids=camera_ids,

@@ -19,7 +19,7 @@ LINE_INFO = os.getenv("LINE_INFO", "0") == "1"
 def get_ext():
     from torch.utils.cpp_extension import BuildExtension
 
-    return BuildExtension.with_options(no_python_abi_suffix=True, use_ninja=False)
+    return BuildExtension.with_options(no_python_abi_suffix=True, use_ninja=True)
 
 
 def get_extensions():

@@ -19,7 +19,7 @@ LINE_INFO = os.getenv("LINE_INFO", "0") == "1"
 def get_ext():
     from torch.utils.cpp_extension import BuildExtension
 
-    return BuildExtension.with_options(no_python_abi_suffix=True, use_ninja=False)
+    return BuildExtension.with_options(no_python_abi_suffix=True, use_ninja=True)
 
 
 def get_extensions():
@@ -28,9 +28,7 @@ def get_extensions():
     from torch.utils.cpp_extension import CUDAExtension
 
     extensions_dir = osp.join("splatad", "cuda", "csrc")
-    sources = glob.glob(osp.join(extensions_dir, "*.cu")) + glob.glob(
-        osp.join(extensions_dir, "*.cpp")
-    )
+    sources = glob.glob(osp.join(extensions_dir, "*.cu")) + glob.glob(osp.join(extensions_dir, "*.cpp"))
     sources = [path for path in sources if "hip" not in path]
 
     undef_macros = []
@@ -45,11 +43,7 @@ def get_extensions():
     extra_link_args = [] if WITH_SYMBOLS else ["-s"]
 
     info = parallel_info()
-    if (
-        "backend: OpenMP" in info
-        and "OpenMP not found" not in info
-        and sys.platform != "darwin"
-    ):
+    if "backend: OpenMP" in info and "OpenMP not found" not in info and sys.platform != "darwin":
         extra_compile_args["cxx"] += ["-DAT_PARALLEL_OPENMP"]
         if sys.platform == "win32":
             extra_compile_args["cxx"] += ["/openmp"]

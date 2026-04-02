@@ -21,7 +21,7 @@ device = torch.device("cuda:0")
 @pytest.mark.parametrize("render_mode", ["RGB", "RGB+D", "D"])
 @pytest.mark.parametrize("packed", [True, False])
 def test_rasterization(per_view_color: bool, sh_degree: Optional[int], render_mode: str, packed: bool):
-    from gsplat.rendering import rasterization
+    from splatad.rendering import rasterization
 
     torch.manual_seed(42)
 
@@ -84,7 +84,7 @@ def test_rasterization(per_view_color: bool, sh_degree: Optional[int], render_mo
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")
 @pytest.mark.parametrize("channels", [3, 32, 128])
 def test_lidar_rasterization(channels: int):
-    from gsplat.rendering import lidar_rasterization
+    from splatad.rendering import lidar_rasterization
 
     torch.manual_seed(42)
 

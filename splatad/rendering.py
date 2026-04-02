@@ -5,7 +5,7 @@ import torch
 from torch import Tensor
 from typing_extensions import Literal
 
-from gsplat.cuda._wrapper import fully_fused_projection
+from splatad.cuda._wrapper import fully_fused_projection
 
 from .cuda._wrapper import (
     fully_fused_lidar_projection,

@@ -1,5 +1,5 @@
-#ifndef GSPLAT_CUDA_HELPERS_H
-#define GSPLAT_CUDA_HELPERS_H
+#ifndef SPLATAD_CUDA_HELPERS_H
+#define SPLATAD_CUDA_HELPERS_H
 
 #include "third_party/glm/glm/glm.hpp"
 #include "third_party/glm/glm/gtc/type_ptr.hpp"
@@ -308,4 +308,4 @@ inline __device__ void compute_and_sum_lidar_velocity_vjp(
     v_vel_view -= v_rot_part;
 }
 
-#endif // GSPLAT_CUDA_HELPERS_H
+#endif // SPLATAD_CUDA_HELPERS_H

@@ -4,12 +4,12 @@ import shutil
 from pathlib import Path
 import argparse
 
-parser = argparse.ArgumentParser(description="Build and cache gsplat CUDA extensions.")
+parser = argparse.ArgumentParser(description="Build and cache splatad CUDA extensions.")
 parser.add_argument(
     "--build-root",
     type=Path,
     required=True,
-    help="Path to the central build cache directory (e.g. /shared/gsplat_builds)",
+    help="Path to the central build cache directory (e.g. /shared/splatad_builds)",
 )
 
 def get_commit_hash():
@@ -26,7 +26,7 @@ def main():
         print(f"✅ Build for {commit} already exists at {build_dir}")
         return
 
-    print(f"🔨 Building gsplat extensions for commit {commit} ...")
+    print(f"🔨 Building splatad extensions for commit {commit} ...")
     build_tmp = repo_root / "build_tmp"
     if build_tmp.exists():
         shutil.rmtree(build_tmp)

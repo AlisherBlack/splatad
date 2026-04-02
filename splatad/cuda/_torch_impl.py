@@ -14,7 +14,7 @@ def _quat_scale_to_covar_preci(
     compute_preci: bool = True,
     triu: bool = False,
 ) -> Tuple[Optional[Tensor], Optional[Tensor]]:
-    """PyTorch implementation of `gsplat.cuda._wrapper.quat_scale_to_covar_preci()`."""
+    """PyTorch implementation of `splatad.cuda._wrapper.quat_scale_to_covar_preci()`."""
     quats = F.normalize(quats, p=2, dim=-1)
     w, x, y, z = torch.unbind(quats, dim=-1)
     R = torch.stack(
@@ -278,7 +278,7 @@ def _fully_fused_projection(
     far_plane: float = 1e10,
     calc_compensations: bool = False,
 ) -> Tuple[Tensor, Tensor, Tensor, Tensor, Optional[Tensor], Tensor]:
-    """PyTorch implementation of `gsplat.cuda._wrapper.fully_fused_projection()`
+    """PyTorch implementation of `splatad.cuda._wrapper.fully_fused_projection()`
 
     .. note::
 
@@ -355,7 +355,7 @@ def _fully_fused_lidar_projection(
     far_plane: float = 1e10,
     calc_compensations: bool = False,
 ) -> Tuple[Tensor, Tensor, Tensor, Tensor, Optional[Tensor], Tensor, Tensor]:
-    """PyTorch implementation of `gsplat.cuda._wrapper.fully_fused_projection()`
+    """PyTorch implementation of `splatad.cuda._wrapper.fully_fused_projection()`
 
     .. note::
 
@@ -428,7 +428,7 @@ def _isect_tiles(
     tile_height: int,
     sort: bool = True,
 ) -> Tuple[Tensor, Tensor, Tensor]:
-    """Pytorch implementation of `gsplat.cuda._wrapper.isect_tiles()`.
+    """Pytorch implementation of `splatad.cuda._wrapper.isect_tiles()`.
 
     .. note::
 
@@ -498,7 +498,7 @@ def _isect_lidar_tiles(
     min_azimuth: float,
     sort: bool = True,
 ) -> Tuple[Tensor, Tensor, Tensor]:
-    """Pytorch implementation of `gsplat.cuda._wrapper.isect_tiles()`.
+    """Pytorch implementation of `splatad.cuda._wrapper.isect_tiles()`.
 
     .. note::
 
@@ -583,7 +583,7 @@ def _isect_lidar_tiles(
 
 @torch.no_grad()
 def _isect_offset_encode(isect_ids: Tensor, C: int, tile_width: int, tile_height: int) -> Tensor:
-    """Pytorch implementation of `gsplat.cuda._wrapper.isect_offset_encode()`.
+    """Pytorch implementation of `splatad.cuda._wrapper.isect_offset_encode()`.
 
     .. note::
 
@@ -625,7 +625,7 @@ def accumulate(
     This function performs alpha compositing for Gaussians based on the pair of indices
     {gaussian_ids, pixel_ids, camera_ids}, which annotates the intersection between all
     pixels and Gaussians. These intersections can be accquired from
-    `gsplat.rasterize_to_indices_in_range`.
+    `splatad.rasterize_to_indices_in_range`.
 
     .. note::
 
@@ -720,7 +720,7 @@ def accumulate_lidar(
     This function performs alpha compositing for Gaussians based on the pair of indices
     {gaussian_ids, pixel_ids, camera_ids}, which annotates the intersection between all
     pixels and Gaussians. These intersections can be accquired from
-    `gsplat.rasterize_to_indices_in_range`.
+    `splatad.rasterize_to_indices_in_range`.
 
     .. note::
 
@@ -836,7 +836,7 @@ def _rasterize_to_pixels(
     batch_per_iter: int = 100,
     rolling_shutter_direction: int = 1,
 ):
-    """Pytorch implementation of `gsplat.cuda._wrapper.rasterize_to_pixels()`.
+    """Pytorch implementation of `splatad.cuda._wrapper.rasterize_to_pixels()`.
 
     This function rasterizes 2D Gaussians to pixels in a Pytorch-friendly way. It
     iteratively accumulates the renderings within each batch of Gaussians. The
@@ -936,7 +936,7 @@ def _rasterize_to_points(
     compute_alpha_sum_until_points_threshold: float,
     batch_per_iter: int = 100,
 ):
-    """Pytorch implementation of `gsplat.cuda._wrapper.rasterize_to_points()`.
+    """Pytorch implementation of `splatad.cuda._wrapper.rasterize_to_points()`.
 
     This function rasterizes 2D Gaussians to points in a Pytorch-friendly way. It
     iteratively accumulates the renderings within each batch of Gaussians. The
@@ -1110,7 +1110,7 @@ def _spherical_harmonics(
     dirs: torch.Tensor,  # [..., 3]
     coeffs: torch.Tensor,  # [..., K, 3]
 ):
-    """Pytorch implementation of `gsplat.cuda._wrapper.spherical_harmonics()`."""
+    """Pytorch implementation of `splatad.cuda._wrapper.spherical_harmonics()`."""
     dirs = F.normalize(dirs, p=2, dim=-1)
     num_bases = (degree + 1) ** 2
     bases = torch.zeros_like(coeffs[..., 0])

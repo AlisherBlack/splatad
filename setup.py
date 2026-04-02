@@ -7,9 +7,9 @@ import sys
 from setuptools import find_packages, setup
 
 __version__ = None
-exec(open("gsplat/version.py", "r").read())
+exec(open("splatad/version.py", "r").read())
 
-URL = "https://github.com/nerfstudio-project/gsplat"
+URL = "https://github.com/nerfstudio-project/splatad"
 
 BUILD_CUDA = os.getenv("BUILD_CUDA", "0") == "1"
 WITH_SYMBOLS = os.getenv("WITH_SYMBOLS", "0") == "1"
@@ -27,7 +27,7 @@ def get_extensions():
     from torch.__config__ import parallel_info
     from torch.utils.cpp_extension import CUDAExtension
 
-    extensions_dir = osp.join("gsplat", "cuda", "csrc")
+    extensions_dir = osp.join("splatad", "cuda", "csrc")
     sources = glob.glob(osp.join(extensions_dir, "*.cu")) + glob.glob(
         osp.join(extensions_dir, "*.cpp")
     )
@@ -37,7 +37,7 @@ def get_extensions():
     define_macros = []
 
     if sys.platform == "win32":
-        define_macros += [("gsplat_EXPORTS", None)]
+        define_macros += [("splatad_EXPORTS", None)]
 
     extra_compile_args = {"cxx": ["-O3"]}
     if not os.name == "nt":  # Not on Windows:
@@ -80,7 +80,7 @@ def get_extensions():
         extra_compile_args["nvcc"] += ["-DWIN32_LEAN_AND_MEAN"]
 
     extension = CUDAExtension(
-        f"gsplat.csrc",
+        f"splatad.csrc",
         sources,
         include_dirs=[extensions_dir],
         define_macros=define_macros,
@@ -93,12 +93,12 @@ def get_extensions():
 
 
 setup(
-    name="gsplat",
+    name="splatad",
     version=__version__,
     description=" Python package for differentiable rasterization of gaussians",
     keywords="gaussian, splatting, cuda",
     url=URL,
-    download_url=f"{URL}/archive/gsplat-{__version__}.tar.gz",
+    download_url=f"{URL}/archive/splatad-{__version__}.tar.gz",
     python_requires=">=3.7",
     install_requires=[
         "ninja",
@@ -109,7 +109,7 @@ setup(
         "typing_extensions; python_version<'3.8'",
     ],
     extras_require={
-        # dev dependencies. Install them by `pip install gsplat[dev]`
+        # dev dependencies. Install them by `pip install splatad[dev]`
         "dev": [
             "black[jupyter]==22.3.0",
             "isort==5.10.1",

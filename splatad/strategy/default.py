@@ -61,7 +61,7 @@ class DefaultStrategy(Strategy):
 
     Examples:
 
-        >>> from gsplat import DefaultStrategy, rasterization
+        >>> from splatad import DefaultStrategy, rasterization
         >>> params: Dict[str, torch.nn.Parameter] | torch.nn.ParameterDict = ...
         >>> optimizers: Dict[str, torch.optim.Optimizer] = ...
         >>> strategy = DefaultStrategy()

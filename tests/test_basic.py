@@ -10,7 +10,7 @@ import math
 
 import pytest
 import torch
-from gsplat._helper import load_test_data
+from splatad._helper import load_test_data
 
 device = torch.device("cuda:0")
 
@@ -58,8 +58,8 @@ def test_data():
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")
 @pytest.mark.parametrize("triu", [False, True])
 def test_quat_scale_to_covar_preci(test_data, triu: bool):
-    from gsplat.cuda._torch_impl import _quat_scale_to_covar_preci
-    from gsplat.cuda._wrapper import quat_scale_to_covar_preci
+    from splatad.cuda._torch_impl import _quat_scale_to_covar_preci
+    from splatad.cuda._wrapper import quat_scale_to_covar_preci
 
     torch.manual_seed(42)
 
@@ -96,8 +96,8 @@ def test_quat_scale_to_covar_preci(test_data, triu: bool):
 
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")
 def test_world_to_cam(test_data):
-    from gsplat.cuda._torch_impl import _world_to_cam
-    from gsplat.cuda._wrapper import quat_scale_to_covar_preci, world_to_cam
+    from splatad.cuda._torch_impl import _world_to_cam
+    from splatad.cuda._wrapper import quat_scale_to_covar_preci, world_to_cam
 
     torch.manual_seed(42)
 
@@ -134,8 +134,8 @@ def test_world_to_cam(test_data):
 
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")
 def test_persp_proj(test_data):
-    from gsplat.cuda._torch_impl import _persp_proj
-    from gsplat.cuda._wrapper import persp_proj, quat_scale_to_covar_preci, world_to_cam
+    from splatad.cuda._torch_impl import _persp_proj
+    from splatad.cuda._wrapper import persp_proj, quat_scale_to_covar_preci, world_to_cam
 
     torch.manual_seed(42)
 
@@ -172,8 +172,8 @@ def test_persp_proj(test_data):
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")
 @pytest.mark.parametrize("calc_depth_comp_grads", [False, True])
 def test_lidar_proj(test_data, calc_depth_comp_grads: bool):
-    from gsplat.cuda._torch_impl import _lidar_proj
-    from gsplat.cuda._wrapper import lidar_proj, quat_scale_to_covar_preci, world_to_cam
+    from splatad.cuda._torch_impl import _lidar_proj
+    from splatad.cuda._wrapper import lidar_proj, quat_scale_to_covar_preci, world_to_cam
 
     torch.manual_seed(42)
 
@@ -209,8 +209,8 @@ def test_lidar_proj(test_data, calc_depth_comp_grads: bool):
 
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")
 def test_compute_lidar_velocity(test_data):
-    from gsplat.cuda._torch_impl import _compute_lidar_velocity
-    from gsplat.cuda._wrapper import compute_lidar_velocity, quat_scale_to_covar_preci, world_to_cam
+    from splatad.cuda._torch_impl import _compute_lidar_velocity
+    from splatad.cuda._wrapper import compute_lidar_velocity, quat_scale_to_covar_preci, world_to_cam
 
     torch.manual_seed(42)
 
@@ -245,8 +245,8 @@ pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")
 
 
 def test_compute_pix_velocity(test_data):
-    from gsplat.cuda._torch_impl import _compute_pix_velocity
-    from gsplat.cuda._wrapper import compute_pix_velocity, quat_scale_to_covar_preci, world_to_cam
+    from splatad.cuda._torch_impl import _compute_pix_velocity
+    from splatad.cuda._wrapper import compute_pix_velocity, quat_scale_to_covar_preci, world_to_cam
 
     torch.manual_seed(42)
 
@@ -286,8 +286,8 @@ def test_compute_pix_velocity(test_data):
 @pytest.mark.parametrize("calc_compensations", [False, True])
 @pytest.mark.parametrize("use_velocities", [False, True])
 def test_projection(test_data, fused: bool, calc_compensations: bool, use_velocities: bool):
-    from gsplat.cuda._torch_impl import _fully_fused_projection
-    from gsplat.cuda._wrapper import fully_fused_projection, quat_scale_to_covar_preci
+    from splatad.cuda._torch_impl import _fully_fused_projection
+    from splatad.cuda._wrapper import fully_fused_projection, quat_scale_to_covar_preci
 
     torch.manual_seed(42)
 
@@ -401,7 +401,7 @@ def test_projection(test_data, fused: bool, calc_compensations: bool, use_veloci
 @pytest.mark.parametrize("sparse_grad", [False, True])
 @pytest.mark.parametrize("calc_compensations", [False, True])
 def test_fully_fused_projection_packed(test_data, fused: bool, sparse_grad: bool, calc_compensations: bool):
-    from gsplat.cuda._wrapper import fully_fused_projection, quat_scale_to_covar_preci
+    from splatad.cuda._wrapper import fully_fused_projection, quat_scale_to_covar_preci
 
     torch.manual_seed(42)
 
@@ -566,8 +566,8 @@ def test_fully_fused_projection_packed(test_data, fused: bool, sparse_grad: bool
 @pytest.mark.parametrize("calc_compensations", [False, True])
 @pytest.mark.parametrize("use_velocities", [True, False])
 def test_lidar_projection(test_data, fused: bool, calc_compensations: bool, use_velocities: bool):
-    from gsplat.cuda._torch_impl import _fully_fused_lidar_projection
-    from gsplat.cuda._wrapper import fully_fused_lidar_projection, quat_scale_to_covar_preci
+    from splatad.cuda._torch_impl import _fully_fused_lidar_projection
+    from splatad.cuda._wrapper import fully_fused_lidar_projection, quat_scale_to_covar_preci
 
     torch.manual_seed(42)
     rescaling_factor = 100
@@ -696,8 +696,8 @@ def test_lidar_projection(test_data, fused: bool, calc_compensations: bool, use_
 
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")
 def test_isect(test_data):
-    from gsplat.cuda._torch_impl import _isect_offset_encode, _isect_tiles
-    from gsplat.cuda._wrapper import isect_offset_encode, isect_tiles
+    from splatad.cuda._torch_impl import _isect_offset_encode, _isect_tiles
+    from splatad.cuda._wrapper import isect_offset_encode, isect_tiles
 
     torch.manual_seed(42)
 
@@ -725,8 +725,8 @@ def test_isect(test_data):
 
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")
 def test_isect_lidar(test_data):
-    from gsplat.cuda._torch_impl import _isect_lidar_tiles, _isect_offset_encode
-    from gsplat.cuda._wrapper import isect_lidar_tiles, isect_offset_encode
+    from splatad.cuda._torch_impl import _isect_lidar_tiles, _isect_offset_encode
+    from splatad.cuda._wrapper import isect_lidar_tiles, isect_offset_encode
 
     torch.manual_seed(42)
 
@@ -785,7 +785,7 @@ def test_isect_lidar(test_data):
 
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")
 def test_map_points_to_lidar_tiles(test_data):
-    from gsplat.cuda._wrapper import map_points_to_lidar_tiles, points_mapping_offset_encode
+    from splatad.cuda._wrapper import map_points_to_lidar_tiles, points_mapping_offset_encode
 
     torch.manual_seed(42)
 
@@ -842,7 +842,7 @@ def test_map_points_to_lidar_tiles(test_data):
 
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")
 def test_populate_image_from_points(test_data):
-    from gsplat.cuda._wrapper import map_points_to_lidar_tiles, points_mapping_offset_encode, populate_image_from_points
+    from splatad.cuda._wrapper import map_points_to_lidar_tiles, points_mapping_offset_encode, populate_image_from_points
 
     torch.manual_seed(42)
 
@@ -891,8 +891,8 @@ def test_populate_image_from_points(test_data):
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")
 @pytest.mark.parametrize("channels", [3, 32, 64])
 def test_rasterize_to_pixels(test_data, channels: int):
-    from gsplat.cuda._torch_impl import _rasterize_to_pixels
-    from gsplat.cuda._wrapper import (
+    from splatad.cuda._torch_impl import _rasterize_to_pixels
+    from splatad.cuda._wrapper import (
         fully_fused_projection,
         isect_offset_encode,
         isect_tiles,
@@ -1014,8 +1014,8 @@ def test_rasterize_to_pixels(test_data, channels: int):
 @pytest.mark.parametrize("compute_alpha_sum_until_points", [False, True])
 @pytest.mark.parametrize("use_depth_compensations", [False, True])
 def test_rasterize_to_points(test_data, compute_alpha_sum_until_points: bool, use_depth_compensations: bool):
-    from gsplat.cuda._torch_impl import _rasterize_to_points
-    from gsplat.cuda._wrapper import (
+    from splatad.cuda._torch_impl import _rasterize_to_points
+    from splatad.cuda._wrapper import (
         fully_fused_lidar_projection,
         isect_lidar_tiles,
         isect_offset_encode,
@@ -1201,8 +1201,8 @@ def test_rasterize_to_points(test_data, compute_alpha_sum_until_points: bool, us
 @pytest.mark.parametrize("use_random_test_points", [False, True])
 @pytest.mark.parametrize("compute_alpha_sum_until_points", [False, True])
 def test_accumulate_until_points(test_data, use_random_test_points: bool, compute_alpha_sum_until_points: bool):
-    from gsplat.cuda._torch_impl import _rasterize_to_points
-    from gsplat.cuda._wrapper import isect_lidar_tiles, isect_offset_encode, rasterize_to_points
+    from splatad.cuda._torch_impl import _rasterize_to_points
+    from splatad.cuda._wrapper import isect_lidar_tiles, isect_offset_encode, rasterize_to_points
 
     torch.manual_seed(42)
     min_azimuth = test_data["min_azimuth"]
@@ -1374,8 +1374,8 @@ def test_accumulate_until_points(test_data, use_random_test_points: bool, comput
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="No CUDA device")
 @pytest.mark.parametrize("sh_degree", [0, 1, 2, 3, 4])
 def test_sh(test_data, sh_degree: int):
-    from gsplat.cuda._torch_impl import _spherical_harmonics
-    from gsplat.cuda._wrapper import spherical_harmonics
+    from splatad.cuda._torch_impl import _spherical_harmonics
+    from splatad.cuda._wrapper import spherical_harmonics
 
     torch.manual_seed(42)
 
